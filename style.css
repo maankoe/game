@@ -1,0 +1,12 @@
+li {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    border: solid 1px #888;
+}
+
+li a {
+    display: block;
+    margin-top: 3px;
+}
