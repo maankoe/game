@@ -1,5 +1,4 @@
 import { TextStyle, BoxStyle, Pen } from '../src/drawing.js';
-import * as assert from 'assert';
 import { expect } from 'chai';
 
 

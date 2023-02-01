@@ -1,12 +1,20 @@
-import {Pen} from './drawing.js';
+import { Pen } from './drawing.js';
 
 
 class Cell {
-	constructor(x, y, boxSize, pen) {
+	constructor(pen, x, y, boxSize) {
 		this.x = x;
 		this.y = y;
 		this.boxSize = boxSize;
 		this._pen = pen;
+	}
+
+	static actual({pen, x, y, boxSize}={}) {
+		return new Cell(pen ?? Pen.actual(), x, y, boxSize);
+	}
+
+	static mock({pen, x, y, boxSize}={}) {
+		return new Cell(pen ?? Pen.mock(), x, y, boxSize);
 	}
 
 	boxX() {
@@ -27,29 +35,33 @@ class Cell {
 
 	draw() {
 		this._pen.drawBox(this.boxX(), this.boxY(), this.boxSize, this.boxSize);
-		this._pen.drawText("X", this.textX(), this.textY());
+		this._pen.drawText("y", this.textX(), this.textY());
 	}
 }
 
 
 class Board {
-	constructor(width, height, boxSize, textStyle, boxStyle) {
-		this.width = width;
-		this.height = height;
+	constructor(pen, num_rows, num_columns, boxSize) {
+		this.num_rows = num_rows;
+		this.num_columns = num_columns;
 		this.boxSize = boxSize;
 		this.cells = []
-		for (var i = 0; i < this.width; i++) {
+		for (var i = 0; i < this.num_rows; i++) {
 			this.cells.push([]);
-			for (var j = 0; j < this.height; j++) {
-				this.cells[i].push(new Cell(i, j, boxSize, new Pen(textStyle, boxStyle)));
+			for (var j = 0; j < this.num_columns; j++) {
+				this.cells[i].push(new Cell(pen, i, j, boxSize));
 			}
 		}
 	}
 
-	draw(context) {
-		for (var i = 0; i < this.width; i++) {
-			for (var j = 0; j < this.height; j++) {
-				this.cells[i][j].draw(context)
+	static mock({pen, num_rows, num_columns, boxSize}={}) {
+		return new Board(pen ?? Pen.mock(), num_rows, num_columns, boxSize);
+	}
+
+	draw() {
+		for (var i = 0; i < this.num_rows; i++) {
+			for (var j = 0; j < this.num_columns; j++) {
+				this.cells[i][j].draw()
 			}
 		}
 	}

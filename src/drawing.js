@@ -1,11 +1,20 @@
 class MockContext {}
 
+function getContext() {
+	let canvas = document.getElementById("board");
+	return context = canvas.getContext("2d");
+}
 
 class TextStyle {
 	constructor(context, fillStyle, font) {
 		this._context = context;
 		this._fillStyle = fillStyle;
 		this._font = font;
+	}
+
+	static actual({context, fillStyle, font}={}) {
+		
+		return new TextStyle(context ?? getContext(), fillStyle, font);
 	}
 
 	static mock({context, fillStyle, font}={}) {
@@ -61,6 +70,13 @@ class Pen {
 		this._boxStyle = boxStyle;
 	}
 
+	static actual({textStyle, boxStyle}={}) {
+		return new Pen(
+			textStyle ?? TextStyle.actual(), 
+			boxStyle ?? BoxStyle.actual()
+		);
+	}
+
 	static mock({textStyle, boxStyle}={}) {
 		return new Pen(
 			textStyle ?? TextStyle.mock(), 
@@ -81,61 +97,6 @@ class Pen {
 		context.fillRect(x, y, width, height);
 		context.strokeRect(x, y, width, height);
 		context.closePath();
-	}
-}
-
-
-class Cell {
-	constructor(x, y, boxSize, pen) {
-		this.x = x;
-		this.y = y;
-		this.boxSize = boxSize;
-		this._pen = pen;
-	}
-
-	boxX() {
-		return this.x * this.boxSize;
-	}
-
-	boxY() {
-		return this.y * this.boxSize;
-	}
-
-	textX() {
-		return this.boxX() + this.boxSize / 3;
-	}
-
-	textY() {
-		return this.boxY() + this.boxSize / 1.5;
-	}
-
-	draw() {
-		this._pen.drawBox(this.boxX(), this.boxY(), this.boxSize, this.boxSize);
-		this._pen.drawText("X", this.textX(), this.textY());
-	}
-}
-
-
-class Board {
-	constructor(width, height, boxSize, textStyle, boxStyle) {
-		this.width = width;
-		this.height = height;
-		this.boxSize = boxSize;
-		this.cells = []
-		for (var i = 0; i < this.width; i++) {
-			this.cells.push([]);
-			for (var j = 0; j < this.height; j++) {
-				this.cells[i].push(new Cell(i, j, boxSize, new Pen(textStyle, boxStyle)));
-			}
-		}
-	}
-
-	draw(context) {
-		for (var i = 0; i < this.width; i++) {
-			for (var j = 0; j < this.height; j++) {
-				this.cells[i][j].draw(context)
-			}
-		}
 	}
 }
 
