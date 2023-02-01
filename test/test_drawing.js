@@ -1,57 +1,58 @@
-// const drawing = require('../src/drawing.js');
-import {TextStyle, BoxStyle, Pen} from './drawing.js';
+import { TextStyle, BoxStyle, Pen } from '../src/drawing.js';
+import * as assert from 'assert';
+import { expect } from 'chai';
 
 
-describe("TextStyle", () => {
-    test("Construction", () => {
+describe('TextStyle', () => {
+    it('constructor', () => {
         let fillStyle = "fillStyle";
         let font = "font";
-        let textStyle = drawing.TextStyle.mock({fillStyle: fillStyle, font: font});
-        expect(textStyle.context().fillStyle).toEqual(fillStyle);
-        expect(textStyle.context().font).toEqual(font);
+        let textStyle = TextStyle.mock({fillStyle: fillStyle, font: font});
+        expect(textStyle.context().fillStyle).to.equal(fillStyle);
+        expect(textStyle.context().font).to.equal(font);
     });
-    test("setFillStyle", () => {
+    it("setFillStyle", () => {
         let fillStyle = "newFillStyle";
         let font = "font";
-        let textStyle = drawing.TextStyle.mock({fillStyle: "oldFillStyle", font: font});
+        let textStyle = TextStyle.mock({fillStyle: "oldFillStyle", font: font});
         textStyle.setFillStyle(fillStyle);
-        expect(textStyle.context().fillStyle).toEqual(fillStyle);
-        expect(textStyle.context().font).toEqual(font);
+        expect(textStyle.context().fillStyle).to.equal(fillStyle);
+        expect(textStyle.context().font).to.equal(font);
     });
-    test("setFont", () => {
+    it("setFont", () => {
         let fillStyle = "fillStyle";
         let font = "newFont";
-        let textStyle = drawing.TextStyle.mock({fillStyle: fillStyle, font:"oldFont"});
+        let textStyle = TextStyle.mock({fillStyle: fillStyle, font:"oldFont"});
         textStyle.setFont(font);
-        expect(textStyle.context().fillStyle).toEqual(fillStyle);
-        expect(textStyle.context().font).toEqual(font);
+        expect(textStyle.context().fillStyle).to.equal(fillStyle);
+        expect(textStyle.context().font).to.equal(font);
     });
 });
 
 
 describe("BoxStyle", () => {
-    test("Construction", () => {
+    it("Construction", () => {
         let fillStyle = "fillStyle";
         let borderStyle = "borderStyle";
-        let boxStyle = drawing.BoxStyle.mock({fillStyle: fillStyle, borderStyle: borderStyle});
-        expect(boxStyle.context().fillStyle).toEqual(fillStyle);
-        expect(boxStyle.context().strokeStyle).toEqual(borderStyle);
+        let boxStyle = BoxStyle.mock({fillStyle: fillStyle, borderStyle: borderStyle});
+        expect(boxStyle.context().fillStyle).to.equal(fillStyle);
+        expect(boxStyle.context().strokeStyle).to.equal(borderStyle);
     });
-    test("setFillStyle", () => {
+    it("setFillStyle", () => {
         let fillStyle = "newFillStyle";
         let borderStyle = "borderStyle";
-        let boxStyle = drawing.BoxStyle.mock({fillStyle: "oldFillStyle",borderStyle: borderStyle});
+        let boxStyle = BoxStyle.mock({fillStyle: "oldFillStyle",borderStyle: borderStyle});
         boxStyle.setFillStyle(fillStyle);
-        expect(boxStyle.context().fillStyle).toEqual(fillStyle);
-        expect(boxStyle.context().strokeStyle).toEqual(borderStyle);
+        expect(boxStyle.context().fillStyle).to.equal(fillStyle);
+        expect(boxStyle.context().strokeStyle).to.equal(borderStyle);
     });
-    test("setBorderStyle", () => {
+    it("setBorderStyle", () => {
         let fillStyle = "fillStyle";
         let borderStyle = "newBorderStyle";
-        let boxStyle = drawing.BoxStyle.mock({fillStyle: fillStyle, borderStyle: "oldBorderStyle"});
+        let boxStyle = BoxStyle.mock({fillStyle: fillStyle, borderStyle: "oldBorderStyle"});
         boxStyle.setBorderStyle(borderStyle);
-        expect(boxStyle.context().fillStyle).toEqual(fillStyle);
-        expect(boxStyle.context().strokeStyle).toEqual(borderStyle);
+        expect(boxStyle.context().fillStyle).to.equal(fillStyle);
+        expect(boxStyle.context().strokeStyle).to.equal(borderStyle);
     });
 });
 
@@ -95,27 +96,27 @@ class ContextWithMemory {
 
 
 describe("Pen", () => {
-  test("drawText", () => {
+  it("drawText", () => {
     let context = new ContextWithMemory();
-    let pen = drawing.Pen.mock({
-        textStyle: drawing.TextStyle.mock({context: context})
+    let pen = Pen.mock({
+        textStyle: TextStyle.mock({context: context})
     });
     let [text, x, y] = ["text", 1, 2];
     pen.drawText(text, x, y);
-    expect(context.calls).toEqual([
+    expect(context.calls).deep.equal([
         call(ContextWithMemory.BEGIN), 
         call(ContextWithMemory.FILL_TEXT, text, x, y), 
         call(ContextWithMemory.CLOSE)
     ]);
   });
-  test("drawBox", () => {
+  it("drawBox", () => {
     let context = new ContextWithMemory();
-    let pen = drawing.Pen.mock({
-        boxStyle: drawing.BoxStyle.mock({context: context})
+    let pen = Pen.mock({
+        boxStyle: BoxStyle.mock({context: context})
     });
     let [x, y, width, height] = [1, 2, 3, 4];
     pen.drawBox(x, y, width, height);
-    expect(context.calls).toEqual([
+    expect(context.calls).deep.equal([
         call(ContextWithMemory.BEGIN), 
         call(ContextWithMemory.FILL_RECT, x, y, width, height), 
         call(ContextWithMemory.STROKE_RECT, x, y, width, height), 
@@ -123,28 +124,3 @@ describe("Pen", () => {
     ]);
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
