@@ -1,51 +1,87 @@
-class MockContext {}
-
-function getContext() {
+function getBaseContext() {
 	let canvas = document.getElementById("board");
-	return context = canvas.getContext("2d");
+	return canvas.getContext("2d");
 }
 
+
+class Context {
+	static actual({base}={}) {
+		return base ?? getBaseContext();
+	}
+
+	static mock({base}={}) {
+		return base ?? {};
+	}
+}
+
+
 class TextStyle {
-	constructor(context, fillStyle, font) {
-		this._context = context;
+	constructor(fontSize, fontStyle, fillStyle, context) {
+		this._fontSize = fontSize;
+		this._fontStyle = fontStyle;
 		this._fillStyle = fillStyle;
-		this._font = font;
+		this._context = context;
 	}
 
-	static actual({context, fillStyle, font}={}) {
-		
-		return new TextStyle(context ?? getContext(), fillStyle, font);
+	static actual({fontSize, fontStyle, fillStyle, context}={}) {
+		return new TextStyle(
+			fontSize ?? "25px",
+			fontStyle ?? "serif", 
+			fillStyle ?? "black", 
+			context ?? Context.actual()
+		);
 	}
 
-	static mock({context, fillStyle, font}={}) {
-		return new TextStyle(context ?? new MockContext(), fillStyle, font);
+	static mock({fontSize, fontStyle, fillStyle, context}={}) {
+		return new TextStyle(
+			fontSize ?? "25px",
+			fontStyle ?? "serif", 
+			fillStyle ?? "black", 
+			context ?? Context.mock()
+		);
+	}
+
+	setFontSize(fontSize) {
+		this._fontSize = fontSize;
+	}
+
+	setFontStyle(fontStyle) {
+		this._fontStyle = fontStyle;
 	}
 
 	setFillStyle(fillStyle) {
 		this._fillStyle = fillStyle;
 	}
 
-	setFont(font) {
-		this._font = font;
-	}
-
 	context() {
 		this._context.fillStyle = this._fillStyle;
-		this._context.font = this._font;
+		this._context.font = [this._fontSize, this._fontStyle].join(' ');
 		return this._context;
 	}
 }
 
 
 class BoxStyle {
-	constructor(context, fillStyle, borderStyle) {
+	constructor(fillStyle, borderStyle, context) {
 		this._context = context;
 		this._borderStyle =  borderStyle;
 		this._fillStyle = fillStyle;
 	}
 
-	static mock({context, fillStyle, borderStyle}={}) {
-		return new BoxStyle(context ?? new MockContext(), fillStyle, borderStyle);
+	static actual({fillStyle, borderStyle, context}={}) {
+		return new BoxStyle(
+			fillStyle ?? "white", 
+			borderStyle ?? "green", 
+			context ?? Context.actual()
+		);
+	}
+
+	static mock({fillStyle, borderStyle, context}={}) {
+		return new BoxStyle(
+			fillStyle ?? "white", 
+			borderStyle ?? "green", 
+			context ?? Context.mock()
+		);	
 	}
 
 	setFillStyle(fillStyle) {
@@ -58,7 +94,7 @@ class BoxStyle {
 
 	context() {
 		this._context.fillStyle = this._fillStyle;
-		this._context.strokeStyle = this._borderStyle
+		this._context.strokeStyle = this._borderStyle;
 		return this._context;
 	}
 }
@@ -102,6 +138,4 @@ class Pen {
 
 
 export { TextStyle, BoxStyle, Pen };
-
-
 

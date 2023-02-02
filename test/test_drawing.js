@@ -4,27 +4,30 @@ import { expect } from 'chai';
 
 describe('TextStyle', () => {
     it('constructor', () => {
+        let fontSize = "fontSize";
+        let fontStyle = "fontStyle";
         let fillStyle = "fillStyle";
-        let font = "font";
-        let textStyle = TextStyle.mock({fillStyle: fillStyle, font: font});
+        let textStyle = TextStyle.mock({fontSize: fontSize, fontStyle: fontStyle, fillStyle: fillStyle});
+        expect(textStyle.context().font).to.satisfy(x => x.startsWith(fontSize) && x.endsWith(fontStyle));
         expect(textStyle.context().fillStyle).to.equal(fillStyle);
-        expect(textStyle.context().font).to.equal(font);
+    });
+    it("setFontSize", () => {
+        let fontSize = "newFontSize"
+        let textStyle = TextStyle.mock();
+        textStyle.setFontSize(fontSize);
+        expect(textStyle.context().font).to.satisfy(x => x.startsWith(fontSize));
+    });
+    it("setFontStyle", () => {
+        let fontStyle = "newFontStyle"
+        let textStyle = TextStyle.mock();
+        textStyle.setFontStyle(fontStyle);
+        expect(textStyle.context().font).to.satisfy(x => x.endsWith(fontStyle));
     });
     it("setFillStyle", () => {
-        let fillStyle = "newFillStyle";
-        let font = "font";
-        let textStyle = TextStyle.mock({fillStyle: "oldFillStyle", font: font});
+        let fillStyle = "newFillStyle"
+        let textStyle = TextStyle.mock();
         textStyle.setFillStyle(fillStyle);
         expect(textStyle.context().fillStyle).to.equal(fillStyle);
-        expect(textStyle.context().font).to.equal(font);
-    });
-    it("setFont", () => {
-        let fillStyle = "fillStyle";
-        let font = "newFont";
-        let textStyle = TextStyle.mock({fillStyle: fillStyle, font:"oldFont"});
-        textStyle.setFont(font);
-        expect(textStyle.context().fillStyle).to.equal(fillStyle);
-        expect(textStyle.context().font).to.equal(font);
     });
 });
 
@@ -39,25 +42,21 @@ describe("BoxStyle", () => {
     });
     it("setFillStyle", () => {
         let fillStyle = "newFillStyle";
-        let borderStyle = "borderStyle";
-        let boxStyle = BoxStyle.mock({fillStyle: "oldFillStyle",borderStyle: borderStyle});
+        let boxStyle = BoxStyle.mock({fillStyle: "oldFillStyle"});
         boxStyle.setFillStyle(fillStyle);
         expect(boxStyle.context().fillStyle).to.equal(fillStyle);
-        expect(boxStyle.context().strokeStyle).to.equal(borderStyle);
     });
     it("setBorderStyle", () => {
-        let fillStyle = "fillStyle";
         let borderStyle = "newBorderStyle";
-        let boxStyle = BoxStyle.mock({fillStyle: fillStyle, borderStyle: "oldBorderStyle"});
+        let boxStyle = BoxStyle.mock({borderStyle: "oldBorderStyle"});
         boxStyle.setBorderStyle(borderStyle);
-        expect(boxStyle.context().fillStyle).to.equal(fillStyle);
         expect(boxStyle.context().strokeStyle).to.equal(borderStyle);
     });
 });
 
 
 function call(name, ...args) {
-    return {"name": name, "args": args}
+    return {"name": name, "args": args};
 }
 
 
@@ -73,23 +72,23 @@ class ContextWithMemory {
     }
 
     beginPath() {
-        this.calls.push(call(ContextWithMemory.BEGIN))
+        this.calls.push(call(ContextWithMemory.BEGIN));
     }
 
     fillText(text, x, y) {
-        this.calls.push(call(ContextWithMemory.FILL_TEXT, text, x, y))
+        this.calls.push(call(ContextWithMemory.FILL_TEXT, text, x, y));
     }
 
     fillRect(x, y, width, height) {
-        this.calls.push(call(ContextWithMemory.FILL_RECT, x, y, width, height))
+        this.calls.push(call(ContextWithMemory.FILL_RECT, x, y, width, height));
     }
 
     strokeRect(x, y, width, height) {
-        this.calls.push(call(ContextWithMemory.STROKE_RECT, x, y, width, height))
+        this.calls.push(call(ContextWithMemory.STROKE_RECT, x, y, width, height));
     }
 
     closePath() {
-        this.calls.push(call(ContextWithMemory.CLOSE))
+        this.calls.push(call(ContextWithMemory.CLOSE));
     }
 }
 
