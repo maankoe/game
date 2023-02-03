@@ -1,6 +1,5 @@
 function getBaseContext() {
-	let canvas = document.getElementById("board");
-	return canvas.getContext("2d");
+	return document.getElementById("board").getContext("2d");
 }
 
 
@@ -137,5 +136,5 @@ class Pen {
 }
 
 
-export { TextStyle, BoxStyle, Pen };
+export { getBaseContext, TextStyle, BoxStyle, Pen };
 

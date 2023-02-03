@@ -3,21 +3,27 @@ import { Pen } from './drawing.js';
 
 class Cell {
 	constructor(x, y, boxSize, initialChar, pen) {
-		this.x = x;
-		this.y = y;
+		this._x = x;
+		this._y = y;
 		this.boxSize = boxSize;
 		this._char = initialChar;
 		this._pen = pen;
 	}
 
-	static actual({x, y, boxSize, initialChar, pen}={}) {
-		return new Cell(x, y, boxSize ?? 25, initialChar ?? 'x', pen ?? Pen.actual());
+	static actual(x, y, {boxSize, initialChar, pen}={}) {
+		return new Cell(
+			x, 
+			y, 
+			boxSize ?? 25, 
+			initialChar ?? '', 
+			pen ?? Pen.actual()
+		);
 	}
 
-	static mock({x, y, boxSize, initialChar, pen}={}) {
+	static mock(x, y, {boxSize, initialChar, pen}={}) {
 		return new Cell(
 			x ?? 5, 
-			y ?? 5, 
+			y ?? 6, 
 			boxSize ?? 25, 
 			initialChar = '',
 			pen ?? Pen.mock()
@@ -25,11 +31,11 @@ class Cell {
 	}
 
 	boxX() {
-		return this.x * this.boxSize;
+		return this._x * this.boxSize;
 	}
 
 	boxY() {
-		return this.y * this.boxSize;
+		return this._y * this.boxSize;
 	}
 
 	textX() {
@@ -53,10 +59,10 @@ class Board {
 		this.numColumns = numColumns;
 		this.boxSize = boxSize;
 		this.cells = [];
-		for (var i = 0; i < this.numRows; i++) {
+		for (var x = 0; x < this.numRows; x++) {
 			this.cells.push([]);
-			for (var j = 0; j < this.numColumns; j++) {
-				this.cells[i].push(Cell.actual({i: i, j: j}));
+			for (var y = 0; y < this.numColumns; y++) {
+				this.cells[x].push(Cell.actual(x, y));
 			}
 		}
 	}
@@ -80,13 +86,13 @@ class Board {
 	}
 
 	draw() {
-		for (var i = 0; i < this.numRows; i++) {
-			for (var j = 0; j < this.numColumns; j++) {
-				this.cells[i][j].draw();
+		for (var x = 0; x < this.numRows; x++) {
+			for (var y = 0; y < this.numColumns; y++) {
+				this.cells[x][y].draw();
 			}
 		}
 	}
 }
 
 
-export { Board };
+export { Cell, Board };
