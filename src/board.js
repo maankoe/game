@@ -53,23 +53,23 @@ class Board {
 	constructor(numRows, numColumns, boxSize, pen) {
 		this.numRows = numRows;
 		this.numColumns = numColumns;
-		this.boxSize = boxSize;
+		this._boxSize = boxSize;
 		this.cells = [];
 		for (var x = 0; x < this.numRows; x++) {
 			this.cells.push([]);
 			for (var y = 0; y < this.numColumns; y++) {
-				let cell = Cell.actual(x, y);
-				let clickHandler = new ClickHandler(cell.box());
+				let cell = Cell.actual(x, y, {boxSize: boxSize});
 				this.cells[x].push(cell);
 			}
 		}
+		let clickHandler = new ClickHandler(this);
 	}
 
 	static actual({numRows, numColumns, boxSize, pen}={}) {
 		return new Board(
 			numRows ?? 10,
 			numColumns ?? 10, 
-			boxSize ?? 25,
+			boxSize ?? 50,
 			pen ?? Pen.actual()
 		);
 	}
@@ -81,6 +81,10 @@ class Board {
 			boxSize ?? 25,
 			pen ?? Pen.mock()
 		);
+	}
+
+	boxSize() {
+		return this._boxSize;
 	}
 
 	draw() {
