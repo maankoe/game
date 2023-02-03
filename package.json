@@ -241,7 +241,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "mocha && webpack"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",

@@ -1,5 +1,6 @@
 import { Box } from './canvas.js';
 import { Pen } from './drawing.js';
+import { ClickHandler } from './click.js'
 
 
 class Cell {
@@ -57,7 +58,9 @@ class Board {
 		for (var x = 0; x < this.numRows; x++) {
 			this.cells.push([]);
 			for (var y = 0; y < this.numColumns; y++) {
-				this.cells[x].push(Cell.actual(x, y));
+				let cell = Cell.actual(x, y);
+				let clickHandler = new ClickHandler(cell.box());
+				this.cells[x].push(cell);
 			}
 		}
 	}

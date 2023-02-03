@@ -36,4 +36,4 @@ class Box {
 	}
 }
 
-export { getBaseContext, Box };
+export { getBaseCanvas, getBaseContext, Box };
