@@ -1,54 +1,49 @@
+import { Box } from './canvas.js';
 import { Pen } from './drawing.js';
 
 
 class Cell {
-	constructor(x, y, boxSize, initialChar, pen) {
-		this._x = x;
-		this._y = y;
-		this.boxSize = boxSize;
+	constructor(initialChar, box, pen) {
 		this._char = initialChar;
+		this._box = box;
 		this._pen = pen;
 	}
 
 	static actual(x, y, {boxSize, initialChar, pen}={}) {
+		boxSize = boxSize ?? 50;
 		return new Cell(
-			x, 
-			y, 
-			boxSize ?? 25, 
-			initialChar ?? '', 
+			initialChar ?? 'Z', 
+			Box.actual(
+				x * boxSize,
+				y * boxSize, 
+				boxSize
+			),
 			pen ?? Pen.actual()
 		);
 	}
 
 	static mock(x, y, {boxSize, initialChar, pen}={}) {
+		boxSize = boxSize ?? 50;
+		x = x ?? 5;
+		y = y ?? 6;
 		return new Cell(
-			x ?? 5, 
-			y ?? 6, 
-			boxSize ?? 25, 
-			initialChar = '',
-			pen ?? Pen.mock()
+			initialChar ?? 'Z', 
+			Box.actual(
+				x * boxSize,
+				y * boxSize, 
+				boxSize
+			),
+			pen ?? Pen.actual()
 		);
 	}
 
-	boxX() {
-		return this._x * this.boxSize;
-	}
-
-	boxY() {
-		return this._y * this.boxSize;
-	}
-
-	textX() {
-		return this.boxX() + this.boxSize / 3;
-	}
-
-	textY() {
-		return this.boxY() + this.boxSize / 1.5;
+	box() {
+		return this._box;
 	}
 
 	draw() {
-		this._pen.drawBox(this.boxX(), this.boxY(), this.boxSize, this.boxSize);
-		this._pen.drawText(this._char, this.textX(), this.textY());
+		this._pen.drawBox(this.box());
+		this._pen.drawText(this._char, this.box());
 	}
 }
 

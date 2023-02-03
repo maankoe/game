@@ -1,6 +1,4 @@
-function getBaseContext() {
-	return document.getElementById("board").getContext("2d");
-}
+import { getBaseContext } from './canvas.js';
 
 
 class Context {
@@ -69,7 +67,7 @@ class BoxStyle {
 
 	static actual({fillStyle, borderStyle, context}={}) {
 		return new BoxStyle(
-			fillStyle ?? "white", 
+			fillStyle ?? "red", 
 			borderStyle ?? "green", 
 			context ?? Context.actual()
 		);
@@ -119,19 +117,15 @@ class Pen {
 		);
 	}
 
-	drawText(text, x, y) {
+	drawText(text, box) {
 		let context = this._textStyle.context();
-		context.beginPath();
-		context.fillText(text, x, y);
-		context.closePath();
+		context.fillText(text, box.textX(), box.textY());
 	}
 
-	drawBox(x, y, width, height) {
+	drawBox(box) {
 		let context = this._boxStyle.context();
-		context.beginPath();
-		context.fillRect(x, y, width, height);
-		context.strokeRect(x, y, width, height);
-		context.closePath();
+		context.fill(box.path());
+		context.stroke(box.path());
 	}
 }
 
