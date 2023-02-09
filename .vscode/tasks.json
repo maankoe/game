@@ -2,28 +2,17 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "BuildNP",
 			"type": "npm",
 			"script": "build",
-			"group": "build",
-			"problemMatcher": [],
-			"label": "npm: build",
-			"detail": "tsc"
-		},
-		{
-			"type": "npm",
-			"script": "test",
-			"group": "test",
-			"problemMatcher": [],
-			"label": "npm: test",
-			"detail": "mocha"
+            "group": "build_test"
 		},
 		{
 			"label": "BuildTest",
-			"dependsOn": [
-				"npm: build",
-				"npm: test"
-			],
-			"problemMatcher": []
+			"type": "npm",
+			"script": "test",
+			"group": "test",
+			"dependsOn": ["BuildNP"]
 		}
 	]
 }
