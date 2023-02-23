@@ -1,17 +1,32 @@
 import { expect } from "chai";
-import { mockCall } from "../src/mocking.js";
-import { Box, NPPath2D } from "../src/canvas.js";
+import { mockCall, mockCalls } from "../src/mocking.js";
+import { WPath2D, WCanvasContext } from "../src/canvas.js";
 
-describe("Test", () => {
-    it("should work", () => {
+describe("WPathMock", () => {
+    it("Records call to rect(..)", () => {
         let x = 5;
         let y = 10;
-        let size = 15;
-        let path2d = NPPath2D.mock();
-        let box = Box.mock(x, y, size, path2d);
-        expect(path2d.calls).deep.equal([
-            mockCall(NPPath2D.C_RECT, x, y, size, size)
-        ])
+        let width = 15;
+        let height = 17;
+        let path2d = WPath2D.mock();
+        path2d.rect(x, y, width, height);
+        expect(path2d.calls).deep.equal(mockCalls(
+            mockCall(WPath2D.C_RECT, x, y, width, height)
+        ));
+    });
+});
+
+describe("WCanvasMock", () => {
+    it("Records call to fillText(..)", () => {
+        let text = "text";
+        let x = 5;
+        let y = 7;
+        let maxWidth = 2;
+        let canvas = WCanvasContext.mock();
+        canvas.fillText(text, x, y, maxWidth);
+        expect(canvas.calls).deep.equal(mockCalls(
+            mockCall(WCanvasContext.C_FILL_TEXT, text, x, y, maxWidth)
+        ));
     });
 });
 

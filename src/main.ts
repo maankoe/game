@@ -1,7 +1,7 @@
-import { Box, NPPath2D } from "./canvas.js";
+import { WPath2D } from "./canvas.js";
 
-let path = NPPath2D.actual();
-path.rect(50, 50, 25, 50);
+let path = WPath2D.actual();
+path.rect(50, 50, 500, 500);
 
 let board = document.getElementById("board") as HTMLCanvasElement;
 let context = board.getContext("2d");
