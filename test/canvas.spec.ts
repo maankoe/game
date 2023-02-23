@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { mockCall } from "../src/mocking";
-import { Box, NPPath2D } from "../src/canvas";
+import { mockCall } from "../src/mocking.js";
+import { Box, NPPath2D } from "../src/canvas.js";
 
 describe("Test", () => {
     it("should work", () => {
@@ -10,7 +10,7 @@ describe("Test", () => {
         let path2d = NPPath2D.mock();
         let box = Box.mock(x, y, size, path2d);
         expect(path2d.calls).deep.equal([
-            mockCall("rect", x, y, size, size)
+            mockCall(NPPath2D.C_RECT, x, y, size, size)
         ])
     });
 });

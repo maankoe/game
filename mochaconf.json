@@ -1,5 +1,5 @@
 {
-    // "extensions": ["ts"],
-    // "spec": ["**/*.spec.*"]
-    "require": ["ts-node/register"]
+    "extensions": ["ts"],
+    "require": ["ts-node/register"],
+    "node-option": ["loader=ts-node/esm"]
 }

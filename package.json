@@ -2,14 +2,15 @@
   "name": "npgames",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp src/*html build/src/",
     "test": "mocha --config=mochaconf.json test/**/*.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "module",
   "devDependencies": {
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.1",
