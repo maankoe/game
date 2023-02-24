@@ -28,6 +28,23 @@ describe("WCanvasMock", () => {
             mockCall(WCanvasContext.C_FILL_TEXT, text, x, y, maxWidth)
         ));
     });
+    it("Records call to fill(..)", () => {
+        let path = WPath2D.mock();
+        let fillRule = undefined; // TODO: work out how to set/mock this
+        let canvas = WCanvasContext.mock();
+        canvas.fill(path, fillRule);
+        expect(canvas.calls).deep.equal(mockCalls(
+            mockCall(WCanvasContext.C_FILL, path, fillRule)
+        ));
+    });
+    it("Records call to stroke(..)", () => {   
+        let path = WPath2D.mock();
+        let canvas = WCanvasContext.mock();
+        canvas.stroke(path);
+        expect(canvas.calls).deep.equal(mockCalls(
+            mockCall(WCanvasContext.C_STROKE, path)
+        ));
+    });
 });
 
 // describe("Box", () => {

@@ -43,13 +43,10 @@ class WCanvasContext implements IWCanvasContext {
         let board = document.getElementById("board") as HTMLCanvasElement;
         let context = board.getContext("2d");
         if (context) {
-            return context satisfies IWCanvasContext
+            return context satisfies IWCanvasContext;
         } else {
-            return null;
+            throw new ReferenceError("Oh no.");
         }
-        // else {
-        //     throw new ReferenceError("Oh no.")
-        // }
     }
 
     static mock(): WCanvasContext {
@@ -60,11 +57,11 @@ class WCanvasContext implements IWCanvasContext {
         this.calls.mock(WCanvasContext.C_FILL_TEXT, text, x, y, maxWidth);
     }
 
-    fill(path: Path2D, fillRule?: CanvasFillRule): void {
+    fill(path: IWPath2D, fillRule?: CanvasFillRule): void {
         this.calls.mock(WCanvasContext.C_FILL, path, fillRule);
     }
 
-    stroke(path: Path2D): void {
+    stroke(path: IWPath2D): void {
         this.calls.mock(WCanvasContext.C_STROKE, path);
     }
 }
@@ -94,13 +91,5 @@ class WCanvasContext implements IWCanvasContext {
 //         );
 //     }
 // }
-
-
-// interface ICanvas {
-//     fillText(text: string, x: number, y: number, maxWidth?: number): void;
-//     fill(box: Path2D, fillRule?: CanvasFillRule): void;
-//     stroke(path: Path2D): void;
-// }
-
 
 export { WPath2D, WCanvasContext };
